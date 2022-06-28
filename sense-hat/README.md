@@ -21,4 +21,10 @@ copy the build to the raspberry pi.
 scp -i ~/.ssh/pi_rsa  target/aarch64-unknown-linux-musl/debug/sense-hat pi@192.168.1.7:~/
 ```
 
+note: cross doesn't work for M1 macs currently: 06-28/2022. Build using rustup target.
 
+```
+rustup add target armv7-unknown-linux-musleabihf
+cargo build --release --target armv7-unknown-linux-musleabihf
+scp -i ~/.ssh/pi_rsa  target/armv7-unknown-linux-musleabihf/release/sense-hat pi@192.168.1.7:~/
+```

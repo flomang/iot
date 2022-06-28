@@ -1,9 +1,6 @@
-# Custom Library with Authenticator in it
-[target.armv7-unknown-linux-gnueabihf]
-image = "local/armv7-unknown-linux-gnueabihf"
+[target.aarch64-unknown-linux-musl]
+image = "local/aarch64"
 
-#[target.armv7-unknown-linux-musleabihf]
-#image = "opencv:musl"
+[target.aarch64-unknown-linux-musl.env]
+passthrough = ["TARGET_CC=aarch64-linux-musl-gcc", "TARGET_AR=aarch64-linux-musl-ar"]
 
-#[target.aarch64-unknown-linux-musl]
-#image = "local/aarch64-unknown-linux-musl"
