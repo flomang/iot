@@ -108,7 +108,7 @@ impl LedControls {
         // Consume the `FrameSequence` returned by the `left_to_right` method.
         scroll.right_to_left().for_each(|frame| {                   // <3>
             self.screen.write_frame(&frame.frame_line());
-            thread::sleep(::std::time::Duration::from_millis(250));
+            thread::sleep(::std::time::Duration::from_millis(30));
         });        
     }
     // end::scroll[]
