@@ -6,6 +6,7 @@ use sensors::atmospheric::Atmospheric;
 
 use log::{debug, info};
 use sensehat::SenseHat;
+use sensehat_stick::{JoyStick, JoyStickEvent, Action, Direction};
 
 fn main() {
     dotenv::dotenv().ok();
@@ -19,5 +20,10 @@ fn main() {
     led.scroll_text("hello world");
     led.display_symbol(&led::HALLOWEEN, 3);
 
-    info!("done!");
+    let mut stick = JoyStick::open().unwrap();
+    loop {
+        for ev in &stick.events().unwrap() {
+            info!("Stick -- {:?}", ev);
+        }
+    }
 }

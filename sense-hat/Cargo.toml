@@ -3,12 +3,18 @@ name = "sense-hat"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+# sense hat led
 sensehat-screen = { version = "0.2.6", default-features = false, features = ["fonts", "linux-framebuffer", "scroll"] }
+# sense hat humidity sensor
 sensehat = { version = "1.1.1", default-features = false, features = ["humidity"], git = "https://github.com/nusairat/sensehat-rs.git", branch = "chore/fix-retrieve-error"}
+# sense hat stick
+sensehat-stick = { version = "0.1", default-features = false, features = ["linux-evdev"], git = "https://github.com/nusairat/sensehat-stick-rs.git" }
 
+# logging stuffs
 dotenv = "0.15.0"
 env_logger = "0.9"
 log = "0.4.17"
+
+#[patch.crates-io]
+#evdev = "=0.10.1"

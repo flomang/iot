@@ -3,28 +3,34 @@
 Raspberry PI sense hat in rust.
 
 ## Requirements
-Install cross:
+Install aarch64/arm7 targets:
 ```
-cargo install cross --git https://github.com/cross-rs/cross
+rustup add target aarch64-unknown-linux-musleabihf
+rustup add target arm7-unknown-linux-musleabihf
 ```
-[*cross*](https://github.com/cross-rs/cross)
+
+Install linkers:
+```
+brew install FiloSottile/musl-cross/musl-cross --without-x86_64 --with-arm-hf --with-aarch64
+```
+
+Update cargo config file: ~/.cargo/config
+```
+[target.armv7-unknown-linux-musleabihf]
+linker = "arm-linux-musleabihf-ld"
+
+[target.aarch64-unknown-linux-musl]
+linker = "aarch64-linux-musl-ld"
+```
 
 
 ## Cross building for raspberry pi aarch64
-Cross building using default target.
+Cross building for aarch64.
 ```
-cross build --target=aarch64-unknown-linux-musl 
+cargo build --target=aarch64-unknown-linux-musl --release
 ``` 
 
 copy the build to the raspberry pi.
 ```
-scp -i ~/.ssh/pi_rsa  target/aarch64-unknown-linux-musl/debug/sense-hat pi@192.168.1.7:~/
-```
-
-note: cross doesn't work for M1 macs currently: 06-28/2022. Build using rustup target.
-
-```
-rustup add target armv7-unknown-linux-musleabihf
-cargo build --release --target armv7-unknown-linux-musleabihf
-scp -i ~/.ssh/pi_rsa  target/armv7-unknown-linux-musleabihf/release/sense-hat pi@192.168.1.7:~/
+scp -i ~/.ssh/pi_rsa  target/aarch64-unknown-linux-musl/release/sense-hat pi@192.168.1.7:~/
 ```
