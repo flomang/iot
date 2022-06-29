@@ -1,17 +1,23 @@
 mod led;
+mod sensors;
 
 use led::screen::LedControls;
+use sensors::atmospheric::Atmospheric;
+
+use log::{debug, info};
 use sensehat::SenseHat;
 
 fn main() {
+    dotenv::dotenv().ok();
+    env_logger::init();
+
+    let mut sensor = Atmospheric::new();
+    let temp = sensor.get_temperature();
+    info!("Temp: {:?}", temp);
+
     let mut led = LedControls::new();
-
     led.scroll_text("hello world");
-    led.display_symbol(&led::HALLOWEEN, 12);
+    led.display_symbol(&led::HALLOWEEN, 3);
 
-    let mut hat = SenseHat::new().unwrap();
-    let temp = hat.get_temperature_from_humidity().unwrap().as_celsius();
-
-
-    println!("Temp: {:?} C", temp);
+    info!("done!");
 }
