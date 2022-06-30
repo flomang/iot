@@ -64,7 +64,7 @@ impl LedControls {
         let sleep_time = 500;
         let yellow_squares = self.frame.yellow_squares;
 
-        for x in 0..2 {
+        for _ in 0..2 {
             for ys in &yellow_squares {
                     self.screen.write_frame(ys);
                 thread::sleep(Duration::from_millis(sleep_time));
