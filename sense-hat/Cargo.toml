@@ -13,8 +13,13 @@ sensehat-stick = { version = "0.1", default-features = false, features = ["linux
 
 # logging stuffs
 dotenv = "0.15.0"
-env_logger = "0.9"
+pretty_env_logger = "=0.4.0"
 log = "0.4.17"
+
+# async runtime
+tokio = { version = "1.19.2", features = ["full"] }
+futures = "0.3.21"
+
 
 #[patch.crates-io]
 #evdev = "=0.10.1"

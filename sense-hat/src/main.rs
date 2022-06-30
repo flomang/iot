@@ -10,7 +10,7 @@ use sensehat_stick::{JoyStick, JoyStickEvent, Action, Direction};
 
 fn main() {
     dotenv::dotenv().ok();
-    env_logger::init();
+    pretty_env_logger::init();
 
     let mut sensor = Atmospheric::new();
     let temp = sensor.get_temperature();
