@@ -11,7 +11,7 @@ rustup add target arm7-unknown-linux-musleabihf
 
 Install linkers:
 ```
-brew install FiloSottile/musl-cross/musl-cross --without-x86_64 --with-arm-hf --with-aarch64
+brew install filosottile/musl-cross/musl-cross --without-x86_64 --with-arm-hf --with-aarch64
 ```
 
 Update cargo config file: ~/.cargo/config
