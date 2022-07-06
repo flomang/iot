@@ -1,2 +1,2 @@
 [target.armv7-unknown-linux-musleabihf]
-dockerfile = "Dockerfile"
+image = "local/armv7-unknown-linux-musleabihf"
