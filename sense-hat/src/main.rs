@@ -1,6 +1,7 @@
 #![allow(dead_code, unused_must_use)]
 extern crate error_chain;
 
+mod camera;
 mod daily;
 mod errors;
 mod joystick;
@@ -8,6 +9,7 @@ mod led;
 mod manager;
 mod sensors;
 
+use opencv::prelude::*;
 use errors::*;
 use led::screen::LedControls;
 use sensors::atmospheric::Atmospheric;

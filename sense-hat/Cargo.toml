@@ -3,6 +3,7 @@ name = "sense-hat"
 version = "0.1.0"
 edition = "2021"
 
+
 [dependencies]
 # sense hat led
 sensehat-screen = { version = "0.2.6", default-features = false, features = ["fonts", "linux-framebuffer", "scroll"] }
@@ -28,3 +29,9 @@ error-chain = "0.12.4"
 
 # uuid support
 uuid = { version =  "1.1.2", features = ["v4", "serde"] }
+
+# db
+rusqlite = "=0.27.0"
+
+# open cv
+opencv = "0.65"
