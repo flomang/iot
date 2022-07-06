@@ -1,13 +1,5 @@
-#FROM ghcr.io/cross-rs/armv7-unknown-linux-gnueabihf:latest
 FROM ghcr.io/cross-rs/armv7-unknown-linux-musleabihf:latest
-#FROM nusairat/cross:arm7-gnu-ubuntu-18
 ARG DEBIAN_FRONTEND=noninteractive
-
-
-# add deadsnakces 
-#RUN apt-get install -y software-properties-common \ 
-#    && add-apt-repository ppa:deadsnakes/ppa \
-#    && apt-get update
 
 RUN dpkg --add-architecture armhf
 RUN apt-get update
