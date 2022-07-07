@@ -53,6 +53,8 @@ ENV PKG_CONFIG_LIBDIR /usr/lib/arm-linux-gnueabihf/pkgconfig:/usr/share/pkgconfi
 # At this point, we can use Cmake to generate the OpenCV build scripts:
 RUN cd /root/opencv_all/opencv-4.5.5 && mkdir build 
 
+#RUN echo "$(ls /usr/lib/python3/dist-packages/numpy/core/include)"
+
 # <3>
 WORKDIR /root/opencv_all/opencv-4.5.5/build
 RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
@@ -64,8 +66,8 @@ RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
     -D ENABLE_VFPV3=ON \
     -D BUILD_TESTS=OFF \
     -D BUILD_DOCS=OFF \
-    -D PYTHON3_INCLUDE_PATH=/usr/include/python3.7m \
-    -D PYTHON3_LIBRARIES=/usr/lib/arm-linux-gnueabihf/libpython3.7m.so \
+    -D PYTHON3_INCLUDE_PATH=/usr/include/python3.8 \
+    -D PYTHON3_LIBRARIES=/usr/lib/arm-linux-gnueabihf/libpython3.8.so \
     -D PYTHON3_NUMPY_INCLUDE_DIRS=/usr/lib/python3/dist-packages/numpy/core/include \
     -D BUILD_OPENCV_PYTHON2=OFF \
     -D BUILD_OPENCV_PYTHON3=ON \
@@ -82,8 +84,13 @@ RUN make install/strip
 # tag::finish[]
 # Change the name since it was mislabeled by the installer
 # <1>
-RUN cd /opt/opencv-4.5.5/lib/python3.7/dist-packages/cv2/python-3.7/ \
-    && cp cv2.cpython-37m-x86_64-linux-gnu.so cv2.so
+#RUN cd /opt/opencv-4.5.5/lib/python3.8/dist-packages/cv2/python-3.8/ \
+#    && cp cv2.cpython-37m-x86_64-linux-gnu.so cv2.so
+
+#RUN echo "$(ls /opt/opencv-4.5.5/lib/python3.8/site-packages/cv2/python-3.8/)"
+
+RUN cd /opt/opencv-4.5.5/lib/python3.8/site-packages/cv2/python-3.8/ \
+    && cp cv2.cpython-38-x86_64-linux-gnu.so cv2.so
 
 # <2>
 ## Copy opencv-4.1.0-armhf.tar.bz2 and opencv.pc from your home folder to your Raspberry Pi.
