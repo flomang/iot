@@ -102,9 +102,7 @@ RUN cd /opt \
 WORKDIR /root
 
 # pkg-config settings file
-RUN git clone https://gist.github.com/sol-prog/ed383474872958081985de733eaf352d opencv_cpp_compile_settings \
-    && cd opencv_cpp_compile_settings \
-    && cp opencv.pc ~
+COPY opencv.pc opencv.pc
 
 # Move the opencv.pc we copied in
 RUN mv ~/opencv.pc /usr/lib/arm-linux-gnueabihf/pkgconfig
@@ -113,17 +111,18 @@ RUN mv ~/opencv.pc /usr/lib/arm-linux-gnueabihf/pkgconfig
 # This is where our gnuebihf config will be
 ENV PKG_CONFIG_PATH /usr/lib/arm-linux-gnueabihf/pkgconfig/
 ENV OPENCV_PACKAGE_NAME /usr/lib/arm-linux-gnueabihf/pkgconfig/opencv.pc
-ENV LD_LIBRARY_PATH /opt/opencv-4.5.5/lib
+#ENV LD_LIBRARY_PATH /opt/opencv-4.5.5/lib
 ENV PKG_CONFIG_ALLOW_CROSS 1
+
 # end::finish[]
 
 # Install SQLLite and developer items
 #RUN apt-get install -y sqlite3:armhf
 # tag::sql[]
-RUN apt-get install -y libsqlite3-dev:armhf
+#RUN apt-get install -y libsqlite3-dev:armhf
 
 # Install Open SSL needed for communication back to the UploadService
-RUN apt-get install -y libssl-dev:armhf
+#RUN apt-get install -y libssl-dev:armhf
 # end::sql[]
 # RUN apt-get -y install openssl
 # RUN which openssl
