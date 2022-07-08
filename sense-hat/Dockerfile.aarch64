@@ -1,0 +1,28 @@
+FROM ghcr.io/cross-rs/aarch64-unknown-linux-musl:latest
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update
+
+RUN apt install -y cmake g++ wget
+
+WORKDIR /root
+
+RUN mkdir opencv_build && cd opencv_build \
+    && wget -O opencv.tar.gz https://github.com/opencv/opencv/archive/4.5.5.tar.gz \
+    && tar xf opencv.tar.gz \
+    && wget -O opencv_contrib.tar.gz https://github.com/opencv/opencv_contrib/archive/4.5.5.tar.gz \
+    && tar xf opencv_contrib.tar.gz \
+    && rm *.tar.gz
+
+RUN cd /root/opencv_build/opencv-4.5.5 && mkdir build 
+
+WORKDIR /root/opencv_build/opencv-4.5.5/build
+
+RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
+    -D OPENCV_EXTRA_MODULES_PATH=~/opencv_build/opencv_contrib-4.5.5/modules \
+    # Needed for the rust app
+    -D OPENCV_GENERATE_PKGCONFIG=ON ..
+
+RUN make -j4
+RUN make install
+RUN echo "$(pkg-config --modversion opencv4)"
