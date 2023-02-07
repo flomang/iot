@@ -55,6 +55,8 @@ async fn run_initial(tx: &mut Tx) {
         send(tx, Action::Print(Display::Christmas)).await;
     } else if is_halloween(&local) {
         send(tx, Action::Print(Display::Halloween)).await;
+    } else if is_valentines(&local) {
+        send(tx, Action::Print(Display::Valentines)).await;
     } else {
         send(tx, Action::Print(Display::Text("OK".to_string()))).await;
     }
@@ -78,6 +80,8 @@ async fn display_special(tx: &mut Tx) {
             send(tx, Action::Print(Display::Christmas)).await;
         } else if is_halloween(&local) {
             send(tx, Action::Print(Display::Halloween)).await;
+        } else {
+            send(tx, Action::Print(Display::Valentines)).await;
         }
     }
 }
@@ -90,4 +94,9 @@ fn is_halloween(local: &DateTime<Local>) -> bool {
 fn is_christmas(local: &DateTime<Local>) -> bool {
     // any day in December before or on the 25th
     local.month() == 12 && local.day() <= 25
+}
+
+fn is_valentines(local: &DateTime<Local>) -> bool {
+    // any day in December before or on the 25th
+    local.month() == 2
 }

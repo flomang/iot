@@ -28,9 +28,14 @@ linker = "aarch64-linux-musl-ld"
 Cross building for aarch64.
 ```
 cargo build --target=aarch64-unknown-linux-musl --release
+cargo build --target=armv7-unknown-linux-musleabihf --release
 ``` 
 
 copy the build to the raspberry pi.
 ```
 scp -i ~/.ssh/pi_rsa  target/aarch64-unknown-linux-musl/release/sense-hat pi@192.168.1.7:~/
+```
+or 
+```
+scp -i ~/.ssh/pi_rsa target/armv7-unknown-linux-musleabihf/release/sense-hat pi@192.168.1.7:~/sense-hat
 ```

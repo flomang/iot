@@ -2,15 +2,15 @@ use opencv::{highgui, prelude::*, videoio, Result};
 
 fn main() -> Result<()> {
     let mut cam = videoio::VideoCapture::new(0, videoio::CAP_ANY)?;
-    highgui::named_window("window", highgui::WINDOW_FULLSCREEN)?;
+    let name = "video";
+
+    highgui::named_window(name, highgui::WINDOW_FULLSCREEN)?;
     let mut frame = Mat::default();
 
     loop {
         cam.read(&mut frame)?;
-        highgui::imshow("window", &frame)?;
-        let key = highgui::wait_key(1)?;
-
-        if key == 113 {
+        highgui::imshow(name, &frame)?;
+        if highgui::wait_key(10)? > 0 {
             break;
         }
     }

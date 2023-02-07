@@ -1,41 +1,42 @@
-
 // tag::led[]
-use sensehat_screen::{font_to_frame, PixelColor, Screen, FrameLine, FONT_COLLECTION, Scroll}; // <1>
+use sensehat_screen::{font_to_frame, FrameLine, PixelColor, Screen, Scroll, FONT_COLLECTION}; // <1>
 
 use std::thread;
 use std::time::Duration;
 
-const LED_DEV_PATH: &str = "/dev/fb0";  // <2>
+const LED_DEV_PATH: &str = "/dev/fb0"; // <2>
 
 pub struct LedControls {
-    screen: Screen,             // <3>
-    frame: FrameProcessor
+    screen: Screen, // <3>
+    frame: FrameProcessor,
 }
 
 // Clone is needed because ::  pub trait FlowDelegate: Clone {
-// so its constituent parts have to be Clone 
+// so its constituent parts have to be Clone
 // This is needed for our Authenticator
-impl Clone for LedControls {    // <4>
+impl Clone for LedControls {
+    // <4>
     fn clone(&self) -> Self {
         LedControls {
             screen: Screen::open(LED_DEV_PATH).unwrap(),
-            frame: FrameProcessor::new()
+            frame: FrameProcessor::new(),
         }
     }
 }
 
 impl LedControls {
-    pub fn new() -> LedControls {   // <5>
+    pub fn new() -> LedControls {
+        // <5>
         LedControls {
             screen: Screen::open(LED_DEV_PATH).unwrap(),
-            frame: FrameProcessor::new()
+            frame: FrameProcessor::new(),
         }
     }
-// end::led[]
+    // end::led[]
 
     // tag::blank[]
     pub fn blank(&mut self) {
-        self.screen.write_frame(&self.frame.off_frame); 
+        self.screen.write_frame(&self.frame.off_frame);
     }
     // end::blank[]
 
@@ -54,8 +55,11 @@ impl LedControls {
     pub fn display_symbol(&mut self, frame: &[u8; 128], length: u64) {
         let frame_line = FrameLine::from_slice(frame);
         self.screen.write_frame(&frame_line);
-        thread::sleep(Duration::from_secs(length));
-        self.screen.write_frame(&self.frame.off_frame);
+
+        if length > 0 {
+            thread::sleep(Duration::from_secs(length));
+            self.screen.write_frame(&self.frame.off_frame);
+        }
     }
     // end::symbol[]
 
@@ -66,7 +70,7 @@ impl LedControls {
 
         for _ in 0..2 {
             for ys in &yellow_squares {
-                    self.screen.write_frame(ys);
+                self.screen.write_frame(ys);
                 thread::sleep(Duration::from_millis(sleep_time));
             }
         }
@@ -78,13 +82,14 @@ impl LedControls {
         // get the screen text
         // uses a macro tto get the font string
         let screen_text = FONT_COLLECTION.sanitize_str(word).unwrap(); // <1>
-        let white_50_pct = PixelColor::WHITE.dim(0.5);              
+        let white_50_pct = PixelColor::WHITE.dim(0.5);
 
         // Display the items
         for unicode in screen_text.chars() {
-            if let Some(symbol) = FONT_COLLECTION.get(unicode) {            // <2>
-                let frame = font_to_frame(symbol.byte_array(), white_50_pct);  // <3>
-                self.screen.write_frame(&frame);                // <4>
+            if let Some(symbol) = FONT_COLLECTION.get(unicode) {
+                // <2>
+                let frame = font_to_frame(symbol.byte_array(), white_50_pct); // <3>
+                self.screen.write_frame(&frame); // <4>
             }
             thread::sleep(Duration::from_millis(800));
         }
@@ -103,13 +108,14 @@ impl LedControls {
 
         // Create a `Scroll` from the pixel frame vector.
         // this will create some arrows to scroll over
-        let scroll = Scroll::new(&pixel_frames);           // <2>
+        let scroll = Scroll::new(&pixel_frames); // <2>
 
         // Consume the `FrameSequence` returned by the `left_to_right` method.
-        scroll.right_to_left().for_each(|frame| {                   // <3>
+        scroll.right_to_left().for_each(|frame| {
+            // <3>
             self.screen.write_frame(&frame.frame_line());
             thread::sleep(::std::time::Duration::from_millis(30));
-        });        
+        });
     }
     // end::scroll[]
 }
@@ -123,7 +129,8 @@ struct FrameProcessor {
 
 impl FrameProcessor {
     fn new() -> FrameProcessor {
-        let ys = [                  // <1>
+        let ys = [
+            // <1>
             FrameLine::from_slice(&super::YELLOW_SMALL),
             FrameLine::from_slice(&super::YELLOW_MED),
             FrameLine::from_slice(&super::YELLOW_LARGE),
@@ -131,13 +138,13 @@ impl FrameProcessor {
         ];
 
         // Question Mark
-        let white_50_pct = PixelColor::WHITE.dim(0.5);  // <2>
+        let white_50_pct = PixelColor::WHITE.dim(0.5); // <2>
         let q_mark = FONT_COLLECTION.get('?').unwrap();
 
         FrameProcessor {
-            off_frame: FrameLine::from_slice(&super::OFF),  // <3>
+            off_frame: FrameLine::from_slice(&super::OFF), // <3>
             yellow_squares: ys,
-            question_mark: font_to_frame(q_mark.byte_array(), white_50_pct),   // <4>
+            question_mark: font_to_frame(q_mark.byte_array(), white_50_pct), // <4>
         }
     }
 }

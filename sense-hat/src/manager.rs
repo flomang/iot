@@ -8,7 +8,7 @@ use log::info;
 use std::sync::{Arc, Mutex};
 
 use crate::led::screen::LedControls;
-use crate::led::{HALLOWEEN, CHRISTMAS_TREE};
+use crate::led::{HALLOWEEN, CHRISTMAS_TREE, HEART};
 use crate::sensors::atmospheric::Atmospheric;
 
 // tag::txrx[]
@@ -61,6 +61,9 @@ pub async fn run(   mut rx: Rx,
                     Display::Christmas => {
                         display_christmas(&led_controls);
                     },
+                    Display::Valentines => {
+                        display_valentines(&led_controls);
+                    },
                     Display::Text(text) => {
                         display_text(text, &led_controls);
                     },
@@ -98,7 +101,8 @@ pub enum Display {
     Halloween,
     Christmas,
     QuestionMark,
-    Text(String)
+    Text(String),
+    Valentines
 }
 
 fn send_motion(motion: &Arc<Mutex<bool>>, tx: &MotionTx) {
@@ -121,13 +125,18 @@ fn question_mark(led_controls: &Arc<Mutex<LedControls>>) {
 // Display christmas tree for 30 seconds
 fn display_christmas(led_controls: &Arc<Mutex<LedControls>>) {
     let mut led = led_controls.lock().unwrap();
-    led.display_symbol(&CHRISTMAS_TREE, 30);
+    led.display_symbol(&CHRISTMAS_TREE, 0);
+}
+
+fn display_valentines(led_controls: &Arc<Mutex<LedControls>>) {
+    let mut led = led_controls.lock().unwrap();
+    led.display_symbol(&HEART, 0);
 }
 
  // Display pumpkin tree for 30 seconds
 fn display_halloween(led_controls: &Arc<Mutex<LedControls>>) {
     let mut led = led_controls.lock().unwrap();
-    led.display_symbol(&HALLOWEEN, 30);
+    led.display_symbol(&HALLOWEEN, 0);
 }
 
 fn display_weather(atmospheric: &Arc<Mutex<Atmospheric>>, led_controls: &Arc<Mutex<LedControls>>) {
